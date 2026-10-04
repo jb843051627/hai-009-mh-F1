@@ -37,6 +37,21 @@ public class TMhRegTask implements Serializable {
     @ApiModelProperty(value = "号源转号事项号")
     private String itemNo;
 
+    /** 所投候补队列代号（同科室/同专家共用一档） */
+    @TableField("queue_key")
+    @ApiModelProperty(value = "所投候补队列代号")
+    private String queueKey;
+
+    /** 出诊医生代号（转号前查休诊用） */
+    @TableField("doctor_no")
+    @ApiModelProperty(value = "出诊医生代号")
+    private String doctorNo;
+
+    /** 最早定下的放号日批次号（放号即定，撤号/改用途/重投均不许覆写） */
+    @TableField("release_no")
+    @ApiModelProperty(value = "最早定下的放号日批次号")
+    private String releaseNo;
+
     /** 放号截止那一天最后一刻 */
     @TableField("due_at")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -53,10 +68,27 @@ public class TMhRegTask implements Serializable {
     @ApiModelProperty(value = "号源事由与承接科室记要")
     private String content;
 
-    /** 条目情形 0待转 1已转 2转不出去 */
+    /** 条目情形 0待转 1已转 2转不出去 3挂起 */
     @TableField("status")
-    @ApiModelProperty(value = "条目情形 0待转 1已转 2转不出去")
+    @ApiModelProperty(value = "条目情形 0待转 1已转 2转不出去 3挂起")
     private Integer status;
+
+    /** 实际承接的候补排队人（谁接的） */
+    @TableField("wait_id")
+    @JsonSerialize(using = ToStringSerializer.class)
+    @ApiModelProperty(value = "实际承接的候补排队人")
+    private Long waitId;
+
+    /** 真转出时刻（转号落下时一并记下，落定后不许覆写） */
+    @TableField("transferred_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @ApiModelProperty(value = "真转出时刻")
+    private Date transferredAt;
+
+    /** 挂起原由（医生休诊/科室停摆/候补整队列撤了） */
+    @TableField("suspend_reason")
+    @ApiModelProperty(value = "挂起原由")
+    private String suspendReason;
 
     /** 删除标记 0正常 1删除 */
     @TableField("del_flag")
@@ -106,6 +138,30 @@ public class TMhRegTask implements Serializable {
         this.itemNo = itemNo;
     }
 
+    public String getQueueKey() {
+        return queueKey;
+    }
+
+    public void setQueueKey(String queueKey) {
+        this.queueKey = queueKey;
+    }
+
+    public String getDoctorNo() {
+        return doctorNo;
+    }
+
+    public void setDoctorNo(String doctorNo) {
+        this.doctorNo = doctorNo;
+    }
+
+    public String getReleaseNo() {
+        return releaseNo;
+    }
+
+    public void setReleaseNo(String releaseNo) {
+        this.releaseNo = releaseNo;
+    }
+
     public Date getDueAt() {
         return dueAt;
     }
@@ -136,6 +192,30 @@ public class TMhRegTask implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getWaitId() {
+        return waitId;
+    }
+
+    public void setWaitId(Long waitId) {
+        this.waitId = waitId;
+    }
+
+    public Date getTransferredAt() {
+        return transferredAt;
+    }
+
+    public void setTransferredAt(Date transferredAt) {
+        this.transferredAt = transferredAt;
+    }
+
+    public String getSuspendReason() {
+        return suspendReason;
+    }
+
+    public void setSuspendReason(String suspendReason) {
+        this.suspendReason = suspendReason;
     }
 
     public Integer getDelFlag() {
