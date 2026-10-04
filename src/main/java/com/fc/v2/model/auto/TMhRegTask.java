@@ -53,10 +53,27 @@ public class TMhRegTask implements Serializable {
     @ApiModelProperty(value = "号源事由与承接科室记要")
     private String content;
 
-    /** 条目情形 0待转 1已转 2转不出去 */
+    /** 条目情形 0待转 1已转 2转不出去 3已挂起 4已撤号 5已改用途 */
     @TableField("status")
-    @ApiModelProperty(value = "条目情形 0待转 1已转 2转不出去")
+    @ApiModelProperty(value = "条目情形 0待转 1已转 2转不出去 3已挂起 4已撤号 5已改用途")
     private Integer status;
+
+    /** 最早定的放号日（落定后永不覆盖） */
+    @TableField("release_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @ApiModelProperty(value = "最早定的放号日")
+    private Date releaseAt;
+
+    /** 真转出时刻（与 status=已转 同生，缺一不算转成） */
+    @TableField("trans_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @ApiModelProperty(value = "真转出时刻")
+    private Date transAt;
+
+    /** 挂起原由（医生休诊/科室停摆/候补队列撤了） */
+    @TableField("suspend_reason")
+    @ApiModelProperty(value = "挂起原由")
+    private String suspendReason;
 
     /** 删除标记 0正常 1删除 */
     @TableField("del_flag")
@@ -136,6 +153,30 @@ public class TMhRegTask implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getReleaseAt() {
+        return releaseAt;
+    }
+
+    public void setReleaseAt(Date releaseAt) {
+        this.releaseAt = releaseAt;
+    }
+
+    public Date getTransAt() {
+        return transAt;
+    }
+
+    public void setTransAt(Date transAt) {
+        this.transAt = transAt;
+    }
+
+    public String getSuspendReason() {
+        return suspendReason;
+    }
+
+    public void setSuspendReason(String suspendReason) {
+        this.suspendReason = suspendReason;
     }
 
     public Integer getDelFlag() {
